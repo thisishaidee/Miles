@@ -14,16 +14,24 @@ export default function NewProjectPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-16">
-      <h1 className="text-2xl font-semibold">New Project</h1>
-      <p className="mt-1 text-sm text-white/50">
-        Set the budget and milestone count — you&apos;ll define each
-        milestone in detail on the next screen.
-      </p>
+    <main className="min-h-screen bg-black text-white">
+      <div className="mx-auto max-w-3xl px-6 py-16">
+        <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
+          Dashboard
+        </p>
 
-      <div className="mt-8">
-        <ProjectForm onCreate={handleCreate} />
+        <h1 className="mt-2 text-4xl font-bold">
+          Create New Project
+        </h1>
+
+        <p className="mt-3 text-white/60">
+          Set your project budget, invite contributors, and prepare milestone-based escrow.
+        </p>
+
+        <div className="mt-10 rounded-2xl border border-white/10 bg-white/5 p-8">
+          <ProjectForm onCreate={handleCreate} />
+        </div>
       </div>
-    </div>
+    </main>
   );
 }

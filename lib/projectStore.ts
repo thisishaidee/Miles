@@ -57,3 +57,12 @@ export function saveProject(project: Project): void {
 
   writeAll(all);
 }
+
+/** Deletes a project by id from mock storage. */
+export function deleteProject(id: string): void {
+  const updatedProjects = readAll().filter(
+    (project) => project.id !== id
+  );
+
+  writeAll(updatedProjects);
+}

@@ -225,34 +225,21 @@ export async function setRoutingRules(project: Project): Promise<RoutingConfig> 
  * the verified `(deposit token amount)` entry point with the usdcx
  * token principal and the project's full budget.
  */
-
 export async function depositFunds(
   project: Project
 ): Promise<{ txHash: string }> {
   try {
     const flowVault = getFlowVault();
-   const amount = toBaseUnits(project.totalBudget);
 
-const postConditions = [
- Pc.origin()
-    .willSendEq(amount)
-    .ft(
-      `${USDCX_TOKEN_CONTRACT_ADDRESS}.${USDCX_TOKEN_CONTRACT_NAME}`,
-      USDCX_TOKEN_CONTRACT_NAME
-    ),
-];
 const result = await flowVault.deposit(
-  amount,
-  {
-    postConditions,
-  }
+  toBaseUnits(project.totalBudget)
 );
-    return {
-      txHash: result.txId,
-    };
+
+return {
+  txHash: result.txId,
+};
   } catch (error) {
     if (error instanceof FlowVaultError) throw error;
-
     throw new FlowVaultError(
       `Failed to deposit ${project.totalBudget} into FlowVault for project ${project.id}.`,
       error

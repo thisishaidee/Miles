@@ -14,13 +14,26 @@ export default function ProjectsPage() {
   }, []);
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Projects</h1>
-        <Link
+<div className="min-h-screen bg-black text-white">
+  <div className="mx-auto max-w-6xl px-6 py-16">    
+ <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">  
+<div>
+  <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
+    Dashboard
+  </p>
+
+  <h1 className="mt-2 text-4xl font-bold">
+    Your Projects
+  </h1>
+
+  <p className="mt-3 text-white/60">
+    Manage milestone payments, monitor project progress, and release funds securely.
+  </p>
+</div>      
+  <Link
           href="/projects/new"
-          className="rounded-md bg-vault-accent px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
-        >
+className="rounded-xl bg-blue-600 px-5 py-3 font-medium transition hover:bg-blue-500"       
+  >
           New Project
         </Link>
       </div>
@@ -43,5 +56,7 @@ export default function ProjectsPage() {
         ))}
       </div>
     </div>
+    </div>
   );
 }
+

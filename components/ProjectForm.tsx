@@ -15,7 +15,9 @@ interface FormErrors {
   milestoneCount?: string;
 }
 
-export default function ProjectForm({ onCreate }: ProjectFormProps) {
+export default function ProjectForm({
+  onCreate,
+}: ProjectFormProps) {
   const [name, setName] = useState("");
   const [totalBudget, setTotalBudget] = useState("");
   const [clientWallet, setClientWallet] = useState("");
@@ -30,10 +32,12 @@ export default function ProjectForm({ onCreate }: ProjectFormProps) {
     }
 
     const budget = Number(totalBudget);
+
     if (!totalBudget.trim()) {
       nextErrors.totalBudget = "Total budget is required.";
     } else if (Number.isNaN(budget) || budget <= 0) {
-      nextErrors.totalBudget = "Total budget must be greater than 0.";
+      nextErrors.totalBudget =
+        "Total budget must be greater than 0.";
     }
 
     if (!clientWallet.trim()) {
@@ -41,10 +45,16 @@ export default function ProjectForm({ onCreate }: ProjectFormProps) {
     }
 
     const milestones = Number(milestoneCount);
+
     if (!milestoneCount.trim()) {
-      nextErrors.milestoneCount = "Number of milestones is required.";
-    } else if (!Number.isInteger(milestones) || milestones <= 0) {
-      nextErrors.milestoneCount = "Number of milestones must be greater than 0.";
+      nextErrors.milestoneCount =
+        "Number of milestones is required.";
+    } else if (
+      !Number.isInteger(milestones) ||
+      milestones <= 0
+    ) {
+      nextErrors.milestoneCount =
+        "Number of milestones must be greater than 0.";
     }
 
     return nextErrors;
@@ -95,83 +105,107 @@ export default function ProjectForm({ onCreate }: ProjectFormProps) {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="space-y-5 rounded-lg border border-white/10 bg-vault-panel p-6"
+      className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-xl space-y-6"
     >
       <div>
-        <label htmlFor="name" className="mb-1 block text-sm font-medium text-white/80">
+        <label
+          htmlFor="name"
+          className="mb-2 block text-sm font-medium text-white/80"
+        >
           Project Name
         </label>
+
         <input
           id="name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Website Redesign"
-          className="w-full rounded-md border border-white/10 bg-vault-bg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-vault-accent focus:outline-none"
+          placeholder="Website Redesign"
+          className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30 outline-none focus:border-blue-500"
         />
+
         {errors.name && (
-          <p className="mt-1 text-xs text-red-400">{errors.name}</p>
+          <p className="mt-2 text-sm text-red-400">
+            {errors.name}
+          </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="totalBudget" className="mb-1 block text-sm font-medium text-white/80">
+        <label
+          htmlFor="totalBudget"
+          className="mb-2 block text-sm font-medium text-white/80"
+        >
           Total Budget
         </label>
+
         <input
           id="totalBudget"
           type="number"
-          min="0"
-          step="any"
           value={totalBudget}
           onChange={(e) => setTotalBudget(e.target.value)}
-          placeholder="e.g. 5000"
-          className="w-full rounded-md border border-white/10 bg-vault-bg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-vault-accent focus:outline-none"
+          placeholder="5000"
+          className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30 outline-none focus:border-blue-500"
         />
+
         {errors.totalBudget && (
-          <p className="mt-1 text-xs text-red-400">{errors.totalBudget}</p>
+          <p className="mt-2 text-sm text-red-400">
+            {errors.totalBudget}
+          </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="clientWallet" className="mb-1 block text-sm font-medium text-white/80">
+        <label
+          htmlFor="clientWallet"
+          className="mb-2 block text-sm font-medium text-white/80"
+        >
           Client Wallet
         </label>
+
         <input
           id="clientWallet"
           type="text"
           value={clientWallet}
           onChange={(e) => setClientWallet(e.target.value)}
-          placeholder="e.g. SP2J6ZY48GV1EZ5V2V5RB9MP66SW86PYKKQVX8X0H"
-          className="w-full rounded-md border border-white/10 bg-vault-bg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-vault-accent focus:outline-none"
+          placeholder="SP2..."
+          className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30 outline-none focus:border-blue-500"
         />
+
         {errors.clientWallet && (
-          <p className="mt-1 text-xs text-red-400">{errors.clientWallet}</p>
+          <p className="mt-2 text-sm text-red-400">
+            {errors.clientWallet}
+          </p>
         )}
       </div>
 
       <div>
-        <label htmlFor="milestoneCount" className="mb-1 block text-sm font-medium text-white/80">
+        <label
+          htmlFor="milestoneCount"
+          className="mb-2 block text-sm font-medium text-white/80"
+        >
           Number of Milestones
         </label>
+
         <input
           id="milestoneCount"
           type="number"
-          min="1"
-          step="1"
           value={milestoneCount}
           onChange={(e) => setMilestoneCount(e.target.value)}
-          placeholder="e.g. 3"
-          className="w-full rounded-md border border-white/10 bg-vault-bg px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-vault-accent focus:outline-none"
+          placeholder="3"
+          className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30 outline-none focus:border-blue-500"
         />
+
         {errors.milestoneCount && (
-          <p className="mt-1 text-xs text-red-400">{errors.milestoneCount}</p>
+          <p className="mt-2 text-sm text-red-400">
+            {errors.milestoneCount}
+          </p>
         )}
       </div>
 
       <button
         type="submit"
-        className="w-full rounded-md bg-vault-accent px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+        className="w-full rounded-xl bg-blue-600 py-3 text-base font-semibold transition hover:bg-blue-500"
       >
         Create Project
       </button>
