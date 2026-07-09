@@ -230,23 +230,20 @@ export async function depositFunds(
   project: Project
 ): Promise<{ txHash: string }> {
   try {
-    const flowVault = getFlowVault();
-   const amount = toBaseUnits(project.totalBudget);
+    alert("STEP 1: Creating FlowVault");
+const flowVault = getFlowVault();
 
-const postConditions = [
- Pc.origin()
-    .willSendEq(amount)
-    .ft(
-      `${USDCX_TOKEN_CONTRACT_ADDRESS}.${USDCX_TOKEN_CONTRACT_NAME}`,
-      USDCX_TOKEN_CONTRACT_NAME
-    ),
-];
-const result = await flowVault.deposit(
-  amount,
-  {
-    postConditions,
-  }
-);
+alert("STEP 2: FlowVault created");
+
+const amount = toBaseUnits(project.totalBudget);
+
+alert("STEP 3: Amount = " + amount);
+
+alert("STEP 4: Calling deposit()");
+const result = await flowVault.deposit(amount);
+
+alert("STEP 5: Deposit finished");
+alert(JSON.stringify(result));
     return {
       txHash: result.txId,
     };

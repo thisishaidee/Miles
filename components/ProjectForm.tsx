@@ -105,7 +105,7 @@ export default function ProjectForm({
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-xl space-y-6"
+    className="space-y-6 rounded-2xl border border-white/10 bg-white/5 p-5 shadow-xl sm:p-8"
     >
       <div>
         <label
@@ -121,7 +121,8 @@ export default function ProjectForm({
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Website Redesign"
-          className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30 outline-none focus:border-blue-500"
+         autoComplete="off"
+        className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-base text-white placeholder:text-white/30 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
         />
 
         {errors.name && (
@@ -169,6 +170,8 @@ export default function ProjectForm({
           value={clientWallet}
           onChange={(e) => setClientWallet(e.target.value)}
           placeholder="SP2..."
+          autoComplete="off"
+spellCheck={false}
           className="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30 outline-none focus:border-blue-500"
         />
 
@@ -205,7 +208,7 @@ export default function ProjectForm({
 
       <button
         type="submit"
-        className="w-full rounded-xl bg-blue-600 py-3 text-base font-semibold transition hover:bg-blue-500"
+       className="w-full rounded-xl bg-blue-600 px-6 py-3 text-base font-semibold text-white transition duration-300 hover:bg-blue-500 hover:shadow-lg"
       >
         Create Project
       </button>

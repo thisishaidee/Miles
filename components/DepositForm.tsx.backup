@@ -68,43 +68,32 @@ export default function DepositForm({
     status === "loading" ||
     alreadyFunded;
 
+  async function handleDeposit() {
+    if (alreadyFunded) return;
 
-async function handleDeposit() {
-  if (alreadyFunded) return;
+    setStatus("loading");
+    setErrorMessage(null);
+    setTxHash(null);
 
-  alert("BUTTON CLICKED");
+    try {
+      await setRoutingRules(project);
 
-  setStatus("loading");
-  setErrorMessage(null);
-  setTxHash(null);
+      const result = await depositFunds(project);
 
-  try {
-    alert("STEP A");
-    await setRoutingRules(project);
+      setTxHash(result.txHash);
+      setStatus("success");
 
-    alert("STEP B");
-    const result = await depositFunds(project);
+      onDeposit(result.txHash);
+    } catch (error) {
+      const message =
+        error instanceof FlowVaultError
+          ? error.message
+          : "Something went wrong while depositing to FlowVault.";
 
-    alert("STEP C");
-
-    setTxHash(result.txHash);
-    setStatus("success");
-
-    onDeposit(result.txHash);
-  } catch (error) {
-    alert("ERROR!");
-
-    const message =
-      error instanceof FlowVaultError
-        ? error.message
-        : String(error);
-
-    alert(message);
-
-    setErrorMessage(message);
-    setStatus("error");
+      setErrorMessage(message);
+      setStatus("error");
+    }
   }
-}
 
   return (
     <div className="space-y-4 rounded-lg border border-white/10 bg-vault-panel p-6">

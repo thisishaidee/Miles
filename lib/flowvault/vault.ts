@@ -27,23 +27,26 @@ export function getFlowVault(): FlowVault {
     senderAddress,
 
     contractCallExecutor: async (params) => {
-      console.log("========== FLOWVAULT DEBUG ==========");
-  console.log("function:", params.functionName);
-console.log("args:", params.functionArgs);
-console.log("network:", params.network);
-console.log("mode:", params.postConditionMode);
-console.log("postConditions:", params.postConditions);
-      console.log("====================================");
+     alert("FLOWVAULT DEBUG");
+alert("Function: " + params.functionName);
+alert("Mode: " + params.postConditionMode);
+alert("Post conditions: " + JSON.stringify(params.postConditions));
 
-      return request("stx_callContract", {
-        contract: `${params.contractAddress}.${params.contractName}`,
-        functionName: params.functionName,
-        functionArgs: params.functionArgs,
-        network: params.network,
-        postConditions: params.postConditions ?? [],
-        postConditionMode:
-          params.postConditionMode === "allow" ? "allow" : "deny",
-      });
+   const payload = {
+  contract: `${params.contractAddress}.${params.contractName}`,
+  functionName: params.functionName,
+  functionArgs: params.functionArgs,
+  network: params.network,
+  postConditions: params.postConditions ?? [],
+  postConditionMode:
+    params.postConditionMode === "allow" ? "allow" : "deny",
+};
+
+console.log("========== WALLET PAYLOAD ==========");
+console.log(payload);
+console.log("====================================");
+
+return request("stx_callContract", payload);
     },
   });
 }

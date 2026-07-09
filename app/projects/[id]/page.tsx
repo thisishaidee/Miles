@@ -42,14 +42,22 @@ export default function ProjectDetailPage({
   function handleDelete() {
     if (!project) return;
 
-    const confirmed = window.confirm(
-      "Delete this project? This action cannot be undone."
+    const confirmation = window.prompt(
+      `This action cannot be undone.\n\nType "${project.name}" to permanently delete this project.`
     );
 
-    if (!confirmed) return;
+    if (confirmation === null) return;
+
+    if (confirmation.trim() !== project.name) {
+      window.alert("Project name doesn't match. Project was not deleted.");
+      return;
+    }
 
     deleteProject(project.id);
-    router.push("/");
+
+    window.alert("Project deleted successfully.");
+
+    router.push("/projects");
   }
 
   if (project === undefined) {
@@ -74,20 +82,20 @@ export default function ProjectDetailPage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-10 px-6 py-16">
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold">
             {project.name}
           </h1>
 
-          <p className="mt-1 text-sm text-white/50">
+          <p className="mt-1 break-all text-sm text-white/50">
             Client wallet: {project.clientWallet}
           </p>
         </div>
 
         <button
           onClick={handleDelete}
-          className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+          className="rounded-lg border border-red-500 px-5 py-2 text-sm font-medium text-red-400 transition hover:bg-red-600 hover:text-white"
         >
           Delete Project
         </button>
