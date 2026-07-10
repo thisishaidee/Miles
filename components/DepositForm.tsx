@@ -68,41 +68,29 @@ export default function DepositForm({
     status === "loading" ||
     alreadyFunded;
 
-
 async function handleDeposit() {
-  if (alreadyFunded) return;
-
-  alert("BUTTON CLICKED");
-
-  setStatus("loading");
+  if (!alreadyFunded) {
+    setStatus("loading");
   setErrorMessage(null);
-  setTxHash(null);
+    setTxHash(null);
 
-  try {
-    alert("STEP A");
-    await setRoutingRules(project);
+    try {
+      await setRoutingRules(project);
 
-    alert("STEP B");
-    const result = await depositFunds(project);
+      const result = await depositFunds(project);
 
-    alert("STEP C");
+      setTxHash(result.txHash);
+      setStatus("success");
+      onDeposit(result.txHash);
+    } catch (error) {
+      const message =
+        error instanceof FlowVaultError
+          ? error.message
+          : String(error);
 
-    setTxHash(result.txHash);
-    setStatus("success");
-
-    onDeposit(result.txHash);
-  } catch (error) {
-    alert("ERROR!");
-
-    const message =
-      error instanceof FlowVaultError
-        ? error.message
-        : String(error);
-
-    alert(message);
-
-    setErrorMessage(message);
-    setStatus("error");
+     setErrorMessage(message);
+      setStatus("error");
+    }
   }
 }
 

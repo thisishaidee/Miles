@@ -225,25 +225,16 @@ export async function setRoutingRules(project: Project): Promise<RoutingConfig> 
  * the verified `(deposit token amount)` entry point with the usdcx
  * token principal and the project's full budget.
  */
-
 export async function depositFunds(
   project: Project
 ): Promise<{ txHash: string }> {
   try {
-    alert("STEP 1: Creating FlowVault");
-const flowVault = getFlowVault();
+    const flowVault = getFlowVault();
 
-alert("STEP 2: FlowVault created");
+    const amount = toBaseUnits(project.totalBudget);
 
-const amount = toBaseUnits(project.totalBudget);
+    const result = await flowVault.deposit(amount);
 
-alert("STEP 3: Amount = " + amount);
-
-alert("STEP 4: Calling deposit()");
-const result = await flowVault.deposit(amount);
-
-alert("STEP 5: Deposit finished");
-alert(JSON.stringify(result));
     return {
       txHash: result.txId,
     };

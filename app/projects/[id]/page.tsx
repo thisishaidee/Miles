@@ -9,6 +9,7 @@ import {
   saveProject,
   deleteProject,
 } from "@/lib/projectStore";
+import { getVaultState } from "@/lib/flowvault";
 import type { Project } from "@/types/project";
 
 interface ProjectDetailPageProps {
@@ -25,7 +26,32 @@ export default function ProjectDetailPage({
   );
 
   useEffect(() => {
-    setProject(getProject(params.id));
+    async function loadProject() {
+      const storedProject = getProject(params.id);
+
+      if (!storedProject) {
+        setProject(storedProject);
+        return;
+      }
+
+      try {
+        const vaultState = await getVaultState(storedProject.id);
+
+        const updatedProject = {
+          ...storedProject,
+          vaultBalance: vaultState.totalDeposited,
+          releasedBalance: vaultState.releasedBalance,
+        };
+
+        saveProject(updatedProject);
+        setProject(updatedProject);
+      } catch (error) {
+        console.error("Failed to load FlowVault state:", error);
+        setProject(storedProject);
+      }
+    }
+
+    loadProject();
   }, [params.id]);
 
   function handleMilestonesUpdate(updated: Project) {
@@ -49,14 +75,15 @@ export default function ProjectDetailPage({
     if (confirmation === null) return;
 
     if (confirmation.trim() !== project.name) {
-      window.alert("Project name doesn't match. Project was not deleted.");
+      window.alert(
+        "Project name doesn't match. Project was not deleted."
+      );
       return;
     }
 
     deleteProject(project.id);
 
     window.alert("Project deleted successfully.");
-
     router.push("/projects");
   }
 
