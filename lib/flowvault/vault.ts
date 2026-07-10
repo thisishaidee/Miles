@@ -1,4 +1,5 @@
 import { FlowVault } from "flowvault-sdk";
+import { request } from "@stacks/connect";
 import {
   STACKS_NETWORK,
   FLOWVAULT_CONTRACT_ADDRESS,
@@ -25,20 +26,20 @@ export function getFlowVault(): FlowVault {
     tokenContractName: USDCX_TOKEN_CONTRACT_NAME,
     senderAddress,
 
-    contractCallExecutor: async (params) => {
-      alert("STEP A");
-
-      alert("Params type: " + typeof params);
-
-      try {
-        alert("Params value: " + JSON.stringify(params));
-      } catch (e) {
-        alert("Could not stringify params");
-      }
-
-      return {
-        txId: "debug",
-      } as any;
+    contractCallExecutor: async (call) => {
+      return request("stx_callContract", {
+        contract: `${call.contractAddress}.${call.contractName}`,
+        functionName: call.functionName,
+        functionArgs: call.functionArgs,
+        network: call.network,
+        postConditionMode:
+          String(call.postConditionMode ?? "allow")
+            .toLowerCase()
+            .includes("deny")
+            ? "deny"
+            : "allow",
+        postConditions: call.postConditions,
+      });
     },
   });
 }
